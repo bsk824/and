@@ -2,6 +2,7 @@ package com.example.apktest
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -11,16 +12,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var myWebView: WebView = findViewById(R.id.webview);
-        myWebView.settings.javaScriptEnabled = true;
-        myWebView.webViewClient = WebViewClient();
-//        myWebView.loadUrl("file:///android_asset/www/index.html");
-        myWebView.loadUrl("http://10.80.100.90:10/");
-        myWebView.getSettings().setTextZoom(100);
-        myWebView.getSettings().setUserAgentString(myWebView.getSettings().getUserAgentString() + " app");
-        WebView.setWebContentsDebuggingEnabled(true);
+        val myWebView: WebView = findViewById(R.id.webview)
+        myWebView.settings.javaScriptEnabled = true
+        myWebView.webViewClient = WebViewClient()
+//        myWebView.loadUrl("file:///android_asset/www/index.html")
+        myWebView.loadUrl("http://10.80.100.71:10/")
+        myWebView.settings.textZoom = 100
+        myWebView.settings.userAgentString = myWebView.settings.userAgentString + " app"
+        WebView.setWebContentsDebuggingEnabled(true)
+        val swipe = findViewById<SwipeRefreshLayout>(R.id.swiperefreshlayout)
+        class WebAppInterface {
+            @JavascriptInterface
 
-        var swipe = findViewById<SwipeRefreshLayout>(R.id.swiperefreshlayout)
+            fun refreshSetEnabled(state: Boolean) {
+                swipe.isEnabled = state !== false
+            }
+        }
+        myWebView.addJavascriptInterface(WebAppInterface(), "Test")
+
         swipe.setOnRefreshListener {
             myWebView.reload()
             swipe.isRefreshing = false
@@ -28,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        var myWebView: WebView = findViewById(R.id.webview);
+        val myWebView: WebView = findViewById(R.id.webview)
         if(myWebView.canGoBack()) {
             myWebView.goBack()
         } else {
