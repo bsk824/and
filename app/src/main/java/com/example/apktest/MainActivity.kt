@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         myWebView.settings.javaScriptEnabled = true
         myWebView.webViewClient = WebViewClient()
 //        myWebView.loadUrl("file:///android_asset/www/index.html")
-        myWebView.loadUrl("http://10.80.100.71:10/")
+        myWebView.loadUrl("http://192.168.2.45:4445/event/_work_sheet.html")
         myWebView.settings.textZoom = 100
         myWebView.settings.userAgentString = myWebView.settings.userAgentString + " app"
         WebView.setWebContentsDebuggingEnabled(true)
